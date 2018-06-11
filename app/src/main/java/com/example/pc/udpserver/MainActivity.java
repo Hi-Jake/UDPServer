@@ -45,7 +45,12 @@ public class MainActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread(new Server()).start();
+                try {
+                    Server server = new Server();
+                    server.start();
+                } catch (SocketException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -73,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                     if (address.isLoopbackAddress()) continue;
 
                     if (address instanceof Inet4Address) {
-                        Server.SERVERIP = address.getHostAddress();
                         ip.setText(address.getHostAddress());
 //                        Log.d("ServerIP", address.getHostAddress());
                     }
@@ -99,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
                 for (InterfaceAddress ia : list) {
                     address = ia.getAddress();
                     if (address instanceof Inet4Address) {
-                        Server.SERVERIP = address.getHostAddress();
                         ip.setText(address.getHostAddress());
 //                        Log.d("ServerIP", address.getHostAddress());
                     }
